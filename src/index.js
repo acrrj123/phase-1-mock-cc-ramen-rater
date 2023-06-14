@@ -40,6 +40,20 @@ document.addEventListener('DOMContentLoaded', () =>{
     })
   }
 
+  fetch('http://localhost:3000/ramens')
+  .then(resp => resp.json())
+  .then(ramensArr => createRamen(ramensArr))
+
+  function createRamen(ramensArr) {
+    const form = document.getElementById('new-ramen')
+    form.addEventListener('submit', e => {
+      e.preventDefault()
+      const newName = e.target[0].value
+      console.log(newName)
+      
+    })
+  }
+
   
     
 
