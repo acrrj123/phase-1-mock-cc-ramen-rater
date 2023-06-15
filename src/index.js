@@ -72,65 +72,22 @@ document.addEventListener('DOMContentLoaded', () =>{
     })
   }
 
-  fetch('http://localhost:3000/ramens')
-  .then(resp => resp.json())
-  .then(ramensArr => createRamen(ramensArr))
-
-  function createRamen(ramensArr) {
-    const form = document.getElementById('new-ramen')
-    form.addEventListener('submit', e => {
-      e.preventDefault()
-      const name = document.getElementById('new-name').value
-      const restaurant = e.target[1].value
-      const image = e.target[2].value
-      const rating = e.target[3].value
-      const comment = e.target[4].value
-      renderNewRamen(name, restaurant, image, rating, comment)
-      e.target.reset()
-    })
+  const form = document.getElementById('new-ramen')
+  form.addEventListener('submit', createRamen) 
+  
+  function createRamen(e) {
+    e.preventDefault()
+    const name = document.getElementById('new-name').value
+    const restaurant = e.target[1].value
+    const image = e.target[2].value
+    const rating = e.target[3].value
+    const comment = e.target[4].value
+    //console.log(name, restaurant, image, rating, comment)
+    const ramen = { name, restaurant, image, rating, comment }
+    //console.log(ramen)
+    renderRamensBar(ramen)
+    e.target.reset()
   }
-    
-  function renderNewRamen(name, restaurant, image, rating, comment) {
-    const img = document.createElement('img')
-    img.src=`${image}`
-    img.id=6
-    // https://www.forkknifeswoon.com/wp-content/uploads/2014/10/simple-homemade-chicken-ramen-fork-knife-swoon-01.jpg
-    divMenu.appendChild(img)
-    handleClick(name, restaurant, image, rating, comment)
-  }
-
-  function handleClick(name, restaurant, image, rating, comment) {
-    const btn = document.getElementById('6')
-    //console.log(btn)
-    btn.addEventListener('click', () => {
-      renderNewDetails(name, restaurant, image, rating, comment)
-    })
-  }
-
-  function renderNewDetails(name, restaurant, image, rating, comment) {
-    imgDetail.src=`${image}`
-    image.id = 6
-    const newName = document.querySelector('h2')
-    newName.textContent = `${name}`
-    const newRest = document.querySelector('h3.restaurant')
-    newRest.textContent = `${restaurant}`
-    const newRating = document.querySelector('span#rating-display')
-    newRating.textContent = `${rating}`
-    const newComment = document.querySelector('p#comment-display')
-    newComment.innerHTML = `${comment} <br>`
-    const delBtn = document.createElement('button')
-    delBtn.textContent = 'Delete Ramen'
-    newComment.appendChild(delBtn)
-    delBtn.addEventListener('click', () => {
-      const btn = document.getElementById(6)
-      btn.remove()
-      divDetail.remove()
-      const p = document.querySelector('p')
-      p.remove()
-      newRating.remove()
-      newComment.remove()
-    })
-  }    
 })
   
 
