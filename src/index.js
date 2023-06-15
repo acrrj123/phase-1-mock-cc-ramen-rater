@@ -2,8 +2,9 @@
 document.addEventListener('DOMContentLoaded', () =>{
 
   const divMenu = document.getElementById('ramen-menu')
-  const divDetail = document.getElementById('ramen-detail')
+  let divDetail = document.getElementById('ramen-detail')
   const imgDetail = document.querySelector('img.detail-image')
+  const comment = document.querySelector('p#comment-display')
   
   fetch('http://localhost:3000/ramens')
   .then(resp => resp.json())
@@ -17,10 +18,10 @@ document.addEventListener('DOMContentLoaded', () =>{
     img.src=`${ramen.image}`
     img.id=`${ramen.id}`
     divMenu.appendChild(img)
-    renderDetails(ramen)
+    renderFirstRamen(ramen)
   }
 
-  function renderDetails(ramen) { 
+  function renderFirstRamen(ramen) { 
     imgDetail.src="./assets/ramen/shoyu.jpg"
     const nameDetail = document.querySelector('h2')
     nameDetail.textContent = "Shoyu Ramen"
@@ -28,16 +29,26 @@ document.addEventListener('DOMContentLoaded', () =>{
     restDetail.textContent = "Nonono"
     const rating = document.querySelector('span#rating-display')
     rating.textContent = 7
-    const comment = document.querySelector('p#comment-display')
-    comment.textContent = "Delish. Can't go wrong with a classic!"
-    renderWhenClicking(ramen)
+    comment.innerHTML = "Delish. Can't go wrong with a classic! <br>"
+    const delBtn = document.createElement('button')
+    delBtn.textContent = 'Delete Ramen'
+    comment.appendChild(delBtn)
+    delBtn.addEventListener('click', () => {
+      const delRamen = document.getElementById(1)
+      delRamen.remove()
+      divDetail.remove()
+      const p = document.querySelector('p')
+      p.remove()
+      rating.remove()
+      comment.remove()
+    })
+    renderDetailsWhenClicking(ramen)
   }
-
-  function renderWhenClicking(ramen) {
+  
+  function renderDetailsWhenClicking(ramen) {
     const btn = document.getElementById(`${ramen.id}`)
     //console.log(btn)
     btn.addEventListener('click', () => {
-      const imgDetail = document.querySelector('img.detail-image')
       imgDetail.src=`${ramen.image}`
       const nameDetail = document.querySelector('h2')
       nameDetail.textContent = `${ramen.name}`
@@ -46,7 +57,18 @@ document.addEventListener('DOMContentLoaded', () =>{
       const rating = document.querySelector('span#rating-display')
       rating.textContent = `${ramen.rating}`
       const comment = document.querySelector('p#comment-display')
-      comment.textContent = `${ramen.comment}`
+      comment.innerHTML = `${ramen.comment} <br>`
+      const delBtn = document.createElement('button')
+      delBtn.textContent = 'Delete Ramen'
+      comment.appendChild(delBtn)
+      delBtn.addEventListener('click', () => {
+        btn.remove()
+        divDetail.remove()
+        const p = document.querySelector('p')
+        p.remove()
+        rating.remove()
+        comment.remove()
+      })
     })
   }
 
@@ -58,8 +80,7 @@ document.addEventListener('DOMContentLoaded', () =>{
     const form = document.getElementById('new-ramen')
     form.addEventListener('submit', e => {
       e.preventDefault()
-      //console.log(e.target)
-      const name = e.target[0].value
+      const name = document.getElementById('new-name').value
       const restaurant = e.target[1].value
       const image = e.target[2].value
       const rating = e.target[3].value
@@ -88,6 +109,7 @@ document.addEventListener('DOMContentLoaded', () =>{
 
   function renderNewDetails(name, restaurant, image, rating, comment) {
     imgDetail.src=`${image}`
+    image.id = 6
     const newName = document.querySelector('h2')
     newName.textContent = `${name}`
     const newRest = document.querySelector('h3.restaurant')
@@ -95,7 +117,19 @@ document.addEventListener('DOMContentLoaded', () =>{
     const newRating = document.querySelector('span#rating-display')
     newRating.textContent = `${rating}`
     const newComment = document.querySelector('p#comment-display')
-    newComment.textContent = `${comment}`
+    newComment.innerHTML = `${comment} <br>`
+    const delBtn = document.createElement('button')
+    delBtn.textContent = 'Delete Ramen'
+    newComment.appendChild(delBtn)
+    delBtn.addEventListener('click', () => {
+      const btn = document.getElementById(6)
+      btn.remove()
+      divDetail.remove()
+      const p = document.querySelector('p')
+      p.remove()
+      newRating.remove()
+      newComment.remove()
+    })
   }    
 })
   
@@ -104,5 +138,4 @@ document.addEventListener('DOMContentLoaded', () =>{
     
 
   
-
 
