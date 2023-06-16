@@ -1,74 +1,49 @@
 // write your code here
-document.addEventListener('DOMContentLoaded', () =>{
+document.addEventListener('DOMContentLoaded', () => {
 
-  const divMenu = document.getElementById('ramen-menu')
-  let divDetail = document.getElementById('ramen-detail')
-  const imgDetail = document.querySelector('img.detail-image')
-  const comment = document.querySelector('p#comment-display')
-  
   fetch('http://localhost:3000/ramens')
   .then(resp => resp.json())
-  .then(ramensArr => ramensArr.forEach(ramen => {
-    //console.log(ramen)
-    renderRamensBar(ramen)
-  }))
+  .then(ramensArr => renderRamens(ramensArr))
+  
+  function renderRamens(ramensArr) {
+    //console.log(ramensArr[0])
+    renderDetails(ramensArr[0])
+    ramensArr.forEach(ramen => renderRamensBar(ramen))
+  }
 
   function renderRamensBar(ramen) {
     const img = document.createElement('img')
-    img.src=`${ramen.image}`
-    img.id=`${ramen.id}`
+    img.src = ramen.image
+    img.id = ramen.id
+    img.addEventListener('click', () => renderDetails(ramen))
+    const divMenu = document.getElementById('ramen-menu')
     divMenu.appendChild(img)
-    renderFirstRamen(ramen)
   }
 
-  function renderFirstRamen(ramen) { 
-    imgDetail.src="./assets/ramen/shoyu.jpg"
-    const nameDetail = document.querySelector('h2')
-    nameDetail.textContent = "Shoyu Ramen"
-    const restDetail = document.querySelector('h3.restaurant')
-    restDetail.textContent = "Nonono"
+  function renderDetails(ramen) {
+    
+    const divDetail = document.getElementById('ramen-detail')
+    const image = document.querySelector('img.detail-image')
+    image.src = ramen.image
+    const name = document.querySelector('h2')
+    name.textContent = ramen.name
+    const restaurant = document.querySelector('h3.restaurant')
+    restaurant.textContent = ramen.restaurant
     const rating = document.querySelector('span#rating-display')
-    rating.textContent = 7
-    comment.innerHTML = "Delish. Can't go wrong with a classic! <br>"
+    rating.textContent = ramen.rating
+    const comment = document.querySelector('p#comment-display')
+    comment.innerHTML = `${ramen.comment} <br>`
     const delBtn = document.createElement('button')
     delBtn.textContent = 'Delete Ramen'
     comment.appendChild(delBtn)
     delBtn.addEventListener('click', () => {
-      const delRamen = document.getElementById(1)
-      delRamen.remove()
+      const btn = document.getElementById(`${ramen.id}`)
+      btn.remove()
       divDetail.remove()
       const p = document.querySelector('p')
       p.remove()
       rating.remove()
       comment.remove()
-    })
-    renderDetailsWhenClicking(ramen)
-  }
-  
-  function renderDetailsWhenClicking(ramen) {
-    const btn = document.getElementById(`${ramen.id}`)
-    //console.log(btn)
-    btn.addEventListener('click', () => {
-      imgDetail.src=`${ramen.image}`
-      const nameDetail = document.querySelector('h2')
-      nameDetail.textContent = `${ramen.name}`
-      const restDetail = document.querySelector('h3.restaurant')
-      restDetail.textContent = `${ramen.restaurant}`
-      const rating = document.querySelector('span#rating-display')
-      rating.textContent = `${ramen.rating}`
-      const comment = document.querySelector('p#comment-display')
-      comment.innerHTML = `${ramen.comment} <br>`
-      const delBtn = document.createElement('button')
-      delBtn.textContent = 'Delete Ramen'
-      comment.appendChild(delBtn)
-      delBtn.addEventListener('click', () => {
-        btn.remove()
-        divDetail.remove()
-        const p = document.querySelector('p')
-        p.remove()
-        rating.remove()
-        comment.remove()
-      })
     })
   }
 
