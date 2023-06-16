@@ -21,7 +21,6 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function renderDetails(ramen) {
-    
     const divDetail = document.getElementById('ramen-detail')
     const image = document.querySelector('img.detail-image')
     image.src = ramen.image
